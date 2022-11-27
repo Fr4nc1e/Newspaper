@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.mvvm.newspaper.databinding.ItemArticlePreviewBinding
 import com.mvvm.newspaper.model.Article
@@ -27,17 +28,19 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ArticleViewHolder>() {
         }
     }
 
-    private val differ = AsyncListDiffer(this, differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ArticleViewHolder(
-        ItemArticlePreviewBinding
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
+        binding = ItemArticlePreviewBinding
             .inflate(
                 LayoutInflater
                     .from(parent.context),
                 parent,
                 false
             )
-    )
+
+        return ArticleViewHolder(binding)
+    }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]

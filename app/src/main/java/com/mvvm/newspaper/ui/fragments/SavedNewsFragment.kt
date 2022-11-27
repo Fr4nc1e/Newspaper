@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mvvm.newspaper.databinding.FragmentSavedNewsBinding
+import com.mvvm.newspaper.ui.MainActivity
+import com.mvvm.newspaper.ui.viewmodel.MainViewModel
 
 class SavedNewsFragment : Fragment() {
 
     private var _binding: FragmentSavedNewsBinding? = null
 
     private val binding get() = _binding
+
+    private val viewModel: MainViewModel by lazy {
+        (activity as MainActivity).viewModel
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
