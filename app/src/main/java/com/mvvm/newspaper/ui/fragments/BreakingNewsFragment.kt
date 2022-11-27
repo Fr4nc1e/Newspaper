@@ -49,7 +49,7 @@ class BreakingNewsFragment : Fragment() {
                     is Resource.Error -> {
                         hideProgressBar()
                         it.message?.let { message ->
-                            Log.e(TAG, "An error occured: $message")
+                            Log.e(TAG, "An error occurred: $message")
                         }
                     }
                     is Resource.Loading -> {

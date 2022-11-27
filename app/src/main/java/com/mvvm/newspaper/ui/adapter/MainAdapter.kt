@@ -45,11 +45,16 @@ class MainAdapter : RecyclerView.Adapter<MainAdapter.ArticleViewHolder>() {
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this).load(article.urlToImage).into(binding.ivArticleImage)
-            binding.tvSource.text = article.source.name
-            binding.tvTitle.text = article.title
-            binding.tvDescription.text = article.description
-            binding.tvPublishedAt.text = article.publishedAt
+            binding.apply {
+                Glide
+                    .with(this.root)
+                    .load(article.urlToImage)
+                    .into(ivArticleImage)
+                tvSource.text = article.source.name
+                tvTitle.text = article.title
+                tvDescription.text = article.description
+                tvPublishedAt.text = article.publishedAt
+            }
             setOnClickListener {
                 onItemOnClickListener?.let { it(article) }
             }
