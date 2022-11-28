@@ -18,8 +18,10 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     val viewModel by lazy {
-        val viewModelProviderFactory = MainViewModelFactory(newsRepository)
-        ViewModelProvider(this, viewModelProviderFactory)[MainViewModel::class.java]
+        ViewModelProvider(
+            this,
+            MainViewModelFactory(newsRepository)
+        )[MainViewModel::class.java]
     }
 
     private val newsRepository by lazy {

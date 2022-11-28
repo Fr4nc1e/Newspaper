@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mvvm.newspaper.R
 import com.mvvm.newspaper.databinding.FragmentBreakingNewsBinding
 import com.mvvm.newspaper.ui.MainActivity
 import com.mvvm.newspaper.ui.adapter.MainAdapter
 import com.mvvm.newspaper.ui.viewmodel.MainViewModel
-import com.mvvm.newspaper.util.Constants.TAG
-import com.mvvm.newspaper.util.Resource
+import com.mvvm.newspaper.util.Constants.TAG_BREAKING
+import com.mvvm.newspaper.util.Result
 
 class BreakingNewsFragment : Fragment() {
 
@@ -36,28 +37,39 @@ class BreakingNewsFragment : Fragment() {
 
         setUpRecyclerView()
 
+        newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
+
         viewModel.breakingNews.observe(
-            viewLifecycleOwner,
-            Observer {
-                when (it) {
-                    is Resource.Success -> {
-                        hideProgressBar()
-                        it.data?.let { newsResponse ->
-                            newsAdapter.differ.submitList(newsResponse.articles)
-                        }
-                    }
-                    is Resource.Error -> {
-                        hideProgressBar()
-                        it.message?.let { message ->
-                            Log.e(TAG, "An error occurred: $message")
-                        }
-                    }
-                    is Resource.Loading -> {
-                        showProgressBar()
+            viewLifecycleOwner
+        ) { response ->
+            when (response) {
+                is Result.Success -> {
+                    hideProgressBar()
+                    response.data?.let { newsResponse ->
+                        newsAdapter.differ.submitList(newsResponse.articles)
                     }
                 }
+
+                is Result.Error -> {
+                    hideProgressBar()
+                    response.message?.let { message ->
+                        Log.e(TAG_BREAKING, "An error occurred: $message")
+                    }
+                }
+
+                is Result.Loading -> {
+                    showProgressBar()
+                }
             }
-        )
+        }
 
         return binding?.root
     }
@@ -79,7 +91,7 @@ class BreakingNewsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 }
