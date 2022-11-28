@@ -7,4 +7,5 @@ object Constants {
     const val TAG_BREAKING = "Breaking News Error"
     const val TAG_SEARCH = "Search News Error"
     const val DELAY = 500L
+    const val QUERY_PAGE_SIZE = 20
 }

@@ -16,18 +16,22 @@ class MainViewModel(
 
     val breakingNews: MutableLiveData<Result<NewsResponse>> = MutableLiveData()
 
-    private var breakingNewsPage = 1
-
     val searchNews: MutableLiveData<Result<NewsResponse>> = MutableLiveData()
-
-    private var searchNewsPage = 1
 
     init {
         getBreakingNews("us")
     }
 
+    companion object {
+        var breakingNewsPage = 1
+        var breakingNewsResponse: NewsResponse? = null
+
+        var searchNewsPage = 1
+        var searchNewsResponse: NewsResponse? = null
+    }
+
     @Suppress("SameParameterValue")
-    private fun getBreakingNews(countryCode: String) = viewModelScope.launch {
+    fun getBreakingNews(countryCode: String) = viewModelScope.launch {
         breakingNews.postValue(Result.Loading())
         val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
         breakingNews.postValue(ResponseConvertor.breakingNewsResponseToResult(response))

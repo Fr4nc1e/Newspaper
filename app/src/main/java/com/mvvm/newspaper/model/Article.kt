@@ -14,15 +14,15 @@ data class Article(
     var content: String? = null,
     var description: String? = null,
     var publishedAt: String? = null,
-    val source: Source,
+    val source: Source? = null,
     var title: String? = null,
-    val url: String,
+    val url: String? = null,
     var urlToImage: String? = null
 ) : Serializable {
 
     override fun hashCode(): Int {
         var result = id.hashCode()
-        if (url.isNotEmpty()) {
+        if (url?.isNotEmpty() == true) {
             result = 31 * result + url.hashCode()
         }
         return result

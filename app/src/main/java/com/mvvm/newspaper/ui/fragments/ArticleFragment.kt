@@ -35,7 +35,7 @@ class ArticleFragment : Fragment() {
         binding?.webView?.apply {
             webViewClient = WebViewClient()
             article?.let {
-                loadUrl(it.url)
+                it.url?.let { it1 -> loadUrl(it1) }
             }
         }
 
